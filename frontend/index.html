@@ -18,31 +18,30 @@ scale=1.0">
         <h2>Create Issue</h2> 
         <form id="issue-form"> 
             <label for="title">Title</label> 
-            <input id="title" name="title" type="text"> 
+            <input id="title" name="title" type="text" required> 
  
             <label for="description">Description</label> 
-            <textarea id="description" name="description"></textarea> 
+            <textarea id="description" name="description" required></textarea> 
  
             <label for="priority">Priority</label> 
-            <select id="priority" name="priority"> 
+            <select id="priority" name="priority" required> 
                 <option>Low</option> 
                 <option selected>Medium</option> 
                 <option>High</option> 
             </select> 
  
             <button type="submit">Submit Issue</button> 
-        </form> 
+        </form>
+        <p id="form-message" aria-live="polite"></p>  
     </section> 
  
     <section class="panel"> 
         <h2>Current Issues</h2> 
         <article class="issue-card"> 
-            <h3>Unable to access Wi-Fi</h3> 
-            <p>Connection fails in the teaching lab.</p> 
-            <p><strong>Priority:</strong> High</p> 
-            <p><strong>Status:</strong> Open</p> 
+            <p><strong>Total issues:</strong> <span id="issue-count">0</span></p> 
+            <div id="issues-list"></div> 
         </article> 
     </section> 
 </main> 
  
-<script src="js/app.js"></script> 
+<script src="js/app.js" defer></script> 
