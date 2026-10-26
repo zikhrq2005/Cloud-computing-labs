@@ -1,0 +1,120 @@
+{
+  "runner": "Node.js test runner with real HTTP requests; not a Postman UI run",
+  "node": "v24.15.0",
+  "results": [
+    {
+      "id": "T01",
+      "description": "View issues",
+      "actual": "200; JSON array with 1 seed issue(s)",
+      "passed": true
+    },
+    {
+      "id": "T02",
+      "description": "Create valid issue",
+      "actual": "201; complete issue, UUID, Open status and ISO timestamp",
+      "passed": true
+    },
+    {
+      "id": "T03",
+      "description": "Missing title",
+      "actual": "400 VALIDATION_ERROR; Title is required.",
+      "passed": true
+    },
+    {
+      "id": "T04",
+      "description": "Invalid priority",
+      "actual": "400 VALIDATION_ERROR",
+      "passed": true
+    },
+    {
+      "id": "T05",
+      "description": "Resolve existing issue",
+      "actual": "200; Resolved, all other fields unchanged",
+      "passed": true
+    },
+    {
+      "id": "T06",
+      "description": "Invalid status",
+      "actual": "400 VALIDATION_ERROR",
+      "passed": true
+    },
+    {
+      "id": "T07",
+      "description": "Unknown issue",
+      "actual": "404 ISSUE_NOT_FOUND",
+      "passed": true
+    },
+    {
+      "id": "T08",
+      "description": "Empty collection",
+      "actual": "200; []",
+      "passed": true
+    },
+    {
+      "id": "T09",
+      "description": "Ignore client-owned attempts at server fields",
+      "actual": "201; server-generated values returned and stored",
+      "passed": true
+    },
+    {
+      "id": "T10",
+      "description": "Non-JSON body",
+      "actual": "415 UNSUPPORTED_MEDIA_TYPE",
+      "passed": true
+    },
+    {
+      "id": "T11",
+      "description": "Malformed JSON",
+      "actual": "400 VALIDATION_ERROR; subsequent GET succeeds",
+      "passed": true
+    },
+    {
+      "id": "T12",
+      "description": "Unknown route",
+      "actual": "404 ROUTE_NOT_FOUND",
+      "passed": true
+    },
+    {
+      "id": "T13",
+      "description": "Persistence across a new server process",
+      "actual": "Same ID and Resolved status after stopping and restarting Node",
+      "passed": true
+    },
+    {
+      "id": "T14",
+      "description": "Text boundaries and types",
+      "actual": "Invalid types/lengths rejected without writes; min/max lengths and trimming pass",
+      "passed": true
+    },
+    {
+      "id": "T15",
+      "description": "Invalid body shapes and PATCH media type",
+      "actual": "Invalid bodies return 400; wrong/missing media type returns 415",
+      "passed": true
+    },
+    {
+      "id": "T16",
+      "description": "Storage failure and recovery",
+      "actual": "Generic 500 without data overwrite; writes recover after file repair",
+      "passed": true
+    },
+    {
+      "id": "T17",
+      "description": "Concurrent writes",
+      "actual": "10 simultaneous creates persisted with unique IDs and no lost records",
+      "passed": true
+    },
+    {
+      "id": "T18",
+      "description": "Missing data file",
+      "actual": "Missing store returns []; next create recreates it",
+      "passed": true
+    },
+    {
+      "id": "T19",
+      "description": "Reopen and repeat status update",
+      "actual": "200 for reopen and repeated Open update; immutable fields preserved",
+      "passed": true
+    }
+  ]
+}

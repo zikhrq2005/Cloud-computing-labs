@@ -1,0 +1,419 @@
+{
+  "info": {
+    "name": "Cloud Issue Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Labs 3/4. Generated importable collection, not an export of a claimed Postman run. Run the regular folder in order, then T08 separately with its fixture. POST requests add data. Automated test results are in lab-04-test-results.json."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "issueId",
+      "value": "ISS-101"
+    }
+  ],
+  "item": [
+    {
+      "name": "Regular acceptance checks",
+      "item": [
+        {
+          "name": "T01 View issues",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/issues",
+            "header": []
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Array response', () => pm.expect(body).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T02 Create valid issue",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Printer unavailable\",\n  \"description\": \"The shared printer is not responding.\",\n  \"priority\": \"Medium\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('Server fields', () => { pm.expect(body.status).to.eql('Open'); pm.expect(body.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/); pm.expect(new Date(body.createdAt).toISOString()).to.eql(body.createdAt); });",
+                  "pm.collectionVariables.set('issueId', body.id);",
+                  "pm.collectionVariables.set('createdIssue', JSON.stringify(body));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T03 Missing title",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"The shared printer is not responding.\",\n  \"priority\": \"Medium\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('VALIDATION_ERROR'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T04 Invalid priority",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Printer unavailable\",\n  \"description\": \"The shared printer is not responding.\",\n  \"priority\": \"Critical\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('VALIDATION_ERROR'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T05 Resolve issue",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/issues/{{issueId}}/status",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Resolved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Only status changed', () => pm.expect(body).to.eql({ ...JSON.parse(pm.collectionVariables.get('createdIssue')), status: 'Resolved' }));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T06 Invalid status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/issues/{{issueId}}/status",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Deleted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('VALIDATION_ERROR'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T07 Unknown issue",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/issues/does-not-exist/status",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Resolved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('ISSUE_NOT_FOUND'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T09 Ignore server-owned input",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Printer unavailable\",\n  \"description\": \"The shared printer is not responding.\",\n  \"priority\": \"Medium\",\n  \"id\": \"HACKED-1\",\n  \"status\": \"Resolved\",\n  \"createdAt\": \"2000-01-01T00:00:00.000Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('Server fields', () => { pm.expect(body.status).to.eql('Open'); pm.expect(body.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/); pm.expect(new Date(body.createdAt).toISOString()).to.eql(body.createdAt); });",
+                  "pm.test('Client server-fields ignored', () => { pm.expect(body.id).not.to.eql('HACKED-1'); pm.expect(body.createdAt).not.to.eql('2000-01-01T00:00:00.000Z'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T10 Non-JSON body",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "title=Printer",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 415', () => pm.response.to.have.status(415));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('UNSUPPORTED_MEDIA_TYPE'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T11 Malformed JSON",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Printer\",}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('VALIDATION_ERROR'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T12 Unknown route",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/fake-url",
+            "header": []
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error code', () => pm.expect(body.error.code).to.eql('ROUTE_NOT_FOUND'));",
+                  "pm.test('Error message', () => pm.expect(body.error.message).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Manual empty-store fixture",
+      "item": [
+        {
+          "name": "T08 Empty collection (manual fixture)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/issues",
+            "header": [],
+            "description": "Run separately: stop other writes, back up backend/data/issues.json, replace it with [], send this request, and restore the original file. Do not run this folder against your normal non-empty store."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Array response', () => pm.expect(body).to.be.an('array'));",
+                  "pm.test('Empty array', () => pm.expect(body).to.eql([]));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+Cloud Issue API listening on http://127.0.0.1:6313 (test)
+2026-10-26T22:45:17.912Z GET /api/issues
+2026-10-26T22:45:17.940Z POST /api/issues
+2026-10-26T22:45:18.018Z POST /api/issues
+2026-10-26T22:45:18.024Z POST /api/issues
+2026-10-26T22:45:18.028Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.040Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.046Z PATCH /api/issues/does-not-exist/status
+2026-10-26T22:45:18.054Z GET /api/issues
+2026-10-26T22:45:18.060Z POST /api/issues
+2026-10-26T22:45:18.075Z POST /api/issues
+2026-10-26T22:45:18.078Z POST /api/issues
+2026-10-26T22:45:18.081Z GET /api/issues
+2026-10-26T22:45:18.083Z PATCH /api/fake-url
+Cloud Issue API listening on http://127.0.0.1:6316 (test)
+2026-10-26T22:45:18.439Z GET /api/issues
+2026-10-26T22:45:18.458Z POST /api/issues
+2026-10-26T22:45:18.480Z POST /api/issues
+2026-10-26T22:45:18.482Z POST /api/issues
+2026-10-26T22:45:18.485Z POST /api/issues
+2026-10-26T22:45:18.487Z POST /api/issues
+2026-10-26T22:45:18.489Z POST /api/issues
+2026-10-26T22:45:18.491Z POST /api/issues
+2026-10-26T22:45:18.493Z POST /api/issues
+2026-10-26T22:45:18.496Z POST /api/issues
+2026-10-26T22:45:18.503Z POST /api/issues
+2026-10-26T22:45:18.513Z POST /api/issues
+2026-10-26T22:45:18.516Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.518Z POST /api/issues
+2026-10-26T22:45:18.520Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.523Z POST /api/issues
+2026-10-26T22:45:18.525Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.527Z POST /api/issues
+2026-10-26T22:45:18.529Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.530Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.532Z POST /api/issues
+2026-10-26T22:45:18.533Z POST /api/issues
+2026-10-26T22:45:18.541Z GET /api/issues
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at Object.readIssues (C:\Users\hazmm\OneDrive\Desktop\Univwersity\Year 3\Cloud Eng\Cloud-computing-labs\backend\services\issueService.js:13:25)
+    at async listIssues (C:\Users\hazmm\OneDrive\Desktop\Univwersity\Year 3\Cloud Eng\Cloud-computing-labs\backend\controllers\issues.js:32:26)
+2026-10-26T22:45:18.546Z POST /api/issues
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at readIssues (C:\Users\hazmm\OneDrive\Desktop\Univwersity\Year 3\Cloud Eng\Cloud-computing-labs\backend\services\issueService.js:13:25)
+    at async C:\Users\hazmm\OneDrive\Desktop\Univwersity\Year 3\Cloud Eng\Cloud-computing-labs\backend\services\issueService.js:42:20
+2026-10-26T22:45:18.553Z POST /api/issues
+2026-10-26T22:45:18.562Z GET /api/issues
+2026-10-26T22:45:18.570Z POST /api/issues
+2026-10-26T22:45:18.575Z POST /api/issues
+2026-10-26T22:45:18.575Z POST /api/issues
+2026-10-26T22:45:18.577Z POST /api/issues
+2026-10-26T22:45:18.577Z POST /api/issues
+2026-10-26T22:45:18.577Z POST /api/issues
+2026-10-26T22:45:18.578Z POST /api/issues
+2026-10-26T22:45:18.578Z POST /api/issues
+2026-10-26T22:45:18.579Z POST /api/issues
+2026-10-26T22:45:18.579Z POST /api/issues
+2026-10-26T22:45:18.636Z GET /api/issues
+2026-10-26T22:45:18.643Z GET /api/issues
+2026-10-26T22:45:18.645Z POST /api/issues
+2026-10-26T22:45:18.654Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status
+2026-10-26T22:45:18.663Z PATCH /api/issues/7f394f3b-bd6b-4b73-a2bd-411d5b3c8010/status

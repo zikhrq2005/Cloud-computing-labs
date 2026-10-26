@@ -1,0 +1,90 @@
+@baseUrl = http://localhost:3000
+@issueId = ISS-101
+# Replace issueId with an ID returned by POST.
+
+### T01 View issues
+GET {{baseUrl}}/api/issues
+
+### T02 Create valid issue
+POST {{baseUrl}}/api/issues
+Content-Type: application/json
+
+{
+  "title": "Printer unavailable",
+  "description": "The shared printer is not responding.",
+  "priority": "Medium"
+}
+
+### T03 Missing title
+POST {{baseUrl}}/api/issues
+Content-Type: application/json
+
+{
+  "description": "The shared printer is not responding.",
+  "priority": "Medium"
+}
+
+### T04 Invalid priority
+POST {{baseUrl}}/api/issues
+Content-Type: application/json
+
+{
+  "title": "Printer unavailable",
+  "description": "The shared printer is not responding.",
+  "priority": "Critical"
+}
+
+### T05 Resolve issue
+PATCH {{baseUrl}}/api/issues/{{issueId}}/status
+Content-Type: application/json
+
+{
+  "status": "Resolved"
+}
+
+### T06 Invalid status
+PATCH {{baseUrl}}/api/issues/{{issueId}}/status
+Content-Type: application/json
+
+{
+  "status": "Deleted"
+}
+
+### T07 Unknown issue
+PATCH {{baseUrl}}/api/issues/does-not-exist/status
+Content-Type: application/json
+
+{
+  "status": "Resolved"
+}
+
+### T09 Ignore server-owned input
+POST {{baseUrl}}/api/issues
+Content-Type: application/json
+
+{
+  "title": "Printer unavailable",
+  "description": "The shared printer is not responding.",
+  "priority": "Medium",
+  "id": "HACKED-1",
+  "status": "Resolved",
+  "createdAt": "2000-01-01T00:00:00.000Z"
+}
+
+### T10 Non-JSON body
+POST {{baseUrl}}/api/issues
+Content-Type: text/plain
+
+title=Printer
+
+### T11 Malformed JSON
+POST {{baseUrl}}/api/issues
+Content-Type: application/json
+
+{"title":"Printer",}
+
+### T12 Unknown route
+PATCH {{baseUrl}}/api/fake-url
+
+### T08 Empty collection (manual fixture)
+GET {{baseUrl}}/api/issues

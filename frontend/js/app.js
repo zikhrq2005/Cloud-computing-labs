@@ -83,3 +83,5 @@ function toggleIssueStatus(issueId) {
     issue.status = issue.status === 'Open' ? 'Resolved' : 'Open'; 
     renderIssues(); 
 } 
+
+renderIssues();
